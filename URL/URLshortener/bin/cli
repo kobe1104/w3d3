@@ -1,0 +1,21 @@
+puts "enter your email"
+input_email = gets.chomp
+input_user = User.all.where({email: input_email})
+
+puts "you are #{input_user}"
+
+puts "enter \"create\" to create an url or \"visit\" to visit"
+choice = gets.chomp
+
+if choice == "create"
+  puts "enter url"
+  l_url = gets.chomp
+  puts "long url is: #{l_url}"
+  s_url = ShortenedUrl.create_for_user_and_long_url!(input_user, l_url)
+  puts "#{s_url}"
+else
+  puts "enter short url"
+  s_url = gets.chomp
+  long_url = ShortenedUrl.all.where({short_url: s_url}).long_url
+  Launchy.open(long_url)
+end
